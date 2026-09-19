@@ -43,13 +43,13 @@ Create the version tag and GitHub release first, attaching `module.json` and `mo
 Then validate the release with Foundry's Package Release API:
 
 ```powershell
-pwsh ./scripts/publish-foundry.ps1
+pwsh ./publish/publish-foundry.ps1 -ReleaseToken 'YOUR_PACKAGE_RELEASE_TOKEN'
 ```
 
-The script reads the release token from `FOUNDRY_RELEASE_TOKEN`. If the variable is not set during an interactive run, it requests the token with a masked prompt. After the dry run succeeds, publish the package release with:
+After the dry run succeeds, publish the package release with:
 
 ```powershell
-pwsh ./scripts/publish-foundry.ps1 -Publish
+pwsh ./publish/publish-foundry.ps1 -ReleaseToken 'YOUR_PACKAGE_RELEASE_TOKEN' -Publish
 ```
 
-The publish command always repeats the dry-run validation before making changes. Never commit the release token to the repository.
+The publish command always repeats the dry-run validation before making changes. Never commit the release token to the repository. Be aware that command-line arguments may be saved in shell history or visible to local process-inspection tools.

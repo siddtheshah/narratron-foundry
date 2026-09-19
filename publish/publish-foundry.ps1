@@ -1,5 +1,8 @@
 [CmdletBinding()]
 param(
+  [Parameter(Mandatory)]
+  [ValidateNotNullOrEmpty()]
+  [string] $ReleaseToken,
   [switch] $Publish,
   [string] $ManifestPath = (Join-Path $PSScriptRoot "..\module.json")
 )
@@ -48,23 +51,9 @@ if ($remoteManifest.download -ne $manifest.download) {
 
 $null = Invoke-WebRequest -Uri $manifest.download -Method Head
 
-$releaseToken = [Environment]::GetEnvironmentVariable("FOUNDRY_RELEASE_TOKEN")
-$secureToken = $null
-$tokenPointer = [IntPtr]::Zero
-
-if ([string]::IsNullOrWhiteSpace($releaseToken)) {
-  if (-not [Environment]::UserInteractive) {
-    throw "Set FOUNDRY_RELEASE_TOKEN when running non-interactively."
-  }
-
-  $secureToken = Read-Host "Foundry package release token" -AsSecureString
-  $tokenPointer = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secureToken)
-  $releaseToken = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($tokenPointer)
-}
-
 try {
   $headers = @{
-    Authorization = $releaseToken
+    Authorization = $ReleaseToken
     Accept = "application/json"
     "Content-Type" = "application/json"
   }
@@ -115,10 +104,5 @@ try {
   Write-Host "Package management page: $($result.page)"
 }
 finally {
-  if ($tokenPointer -ne [IntPtr]::Zero) {
-    [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($tokenPointer)
-  }
-
-  $releaseToken = $null
-  $secureToken = $null
+  $ReleaseToken = $null
 }
