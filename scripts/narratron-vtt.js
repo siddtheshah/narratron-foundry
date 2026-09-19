@@ -5,7 +5,7 @@
 Hooks.once("init", () => {
   console.log("Narratron Buddy | Initializing Foundry VTT Integration Module");
 
-  game.settings.register("narratron-buddy-vtt", "obsUrl", {
+  game.settings.register("narratron", "obsUrl", {
     name: "Narratron OBS URL",
     hint: "Direct URL for the Narratron OBS view. Shared with every player in this world; it may include a theater join key.",
     scope: "world",
@@ -15,7 +15,7 @@ Hooks.once("init", () => {
     default: ""
   });
 
-  game.settings.register("narratron-buddy-vtt", "overlayVisible", {
+  game.settings.register("narratron", "overlayVisible", {
     name: "Narratron Overlay Visible",
     hint: "Whether Narratron's shared overlay is currently displayed to every connected player.",
     scope: "world",
@@ -25,7 +25,7 @@ Hooks.once("init", () => {
     default: false
   });
 
-  game.settings.register("narratron-buddy-vtt", "enableAudio", {
+  game.settings.register("narratron", "enableAudio", {
     name: "Enable Background Audio Sync",
     hint: "Automatically stream audio narration and background ambiance from Narratron in Foundry VTT.",
     scope: "world",
@@ -34,7 +34,7 @@ Hooks.once("init", () => {
     default: true
   });
 
-  game.settings.register("narratron-buddy-vtt", "audioVolume", {
+  game.settings.register("narratron", "audioVolume", {
     name: "Audio Volume",
     hint: "Master volume for Narratron audio playback (0.0 to 1.0).",
     scope: "client",
@@ -44,7 +44,7 @@ Hooks.once("init", () => {
     default: 0.8
   });
 
-  game.settings.register("narratron-buddy-vtt", "panelBounds", {
+  game.settings.register("narratron", "panelBounds", {
     name: "Narratron Panel Bounds",
     scope: "client",
     config: false,
@@ -52,7 +52,7 @@ Hooks.once("init", () => {
     default: ""
   });
 
-  game.keybindings.register("narratron-buddy-vtt", "toggleObsOverlay", {
+  game.keybindings.register("narratron", "toggleObsOverlay", {
     name: "Toggle Narratron OBS Overlay",
     hint: "Show or hide the Narratron OBS view over the active Foundry canvas.",
     editable: [{ key: "KeyO", modifiers: ["ALT"] }],
@@ -70,7 +70,7 @@ Hooks.once("init", () => {
   });
 });
 
-const MODULE_ID = "narratron-buddy-vtt";
+const MODULE_ID = "narratron";
 
 function getObsUrl() {
   return game.settings.get(MODULE_ID, "obsUrl").trim();

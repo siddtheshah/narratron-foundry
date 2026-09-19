@@ -8,12 +8,12 @@ In Foundry VTT, open **Add-on Modules**, click **Install Module**, and paste thi
 
 `https://github.com/siddtheshah/narratron-foundry/releases/latest/download/module.json`
 
-For a manual installation, download `module.zip` from the latest GitHub release and extract it to your Foundry VTT User Data directory under `Data/modules/narratron-buddy-vtt`:
+For a manual installation, download `module.zip` from the latest GitHub release and extract it to your Foundry VTT User Data directory under `Data/modules/narratron`:
 
 1. The module directory is located at:
-   - **Windows**: `%LOCALAPPDATA%\FoundryVTT\Data\modules\narratron-buddy-vtt`
-   - **macOS**: `~/Library/Application Support/FoundryVTT/Data/modules/narratron-buddy-vtt`
-   - **Linux**: `~/.local/share/FoundryVTT/Data/modules/narratron-buddy-vtt`
+   - **Windows**: `%LOCALAPPDATA%\FoundryVTT\Data\modules\narratron`
+   - **macOS**: `~/Library/Application Support/FoundryVTT/Data/modules/narratron`
+   - **Linux**: `~/.local/share/FoundryVTT/Data/modules/narratron`
 
 2. Launch or restart Foundry VTT.
 3. In Foundry VTT, go to **Game Settings** -> **Manage Modules**, find **Narratron Buddy Integration**, and enable it.
