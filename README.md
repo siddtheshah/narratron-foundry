@@ -35,3 +35,21 @@ The Narratron view is a floating panel: drag its title bar to move it and use th
 ## Streaming audio
 
 The `/obs` page now plays the active Narratron background playlist as well as rendering the visuals. In OBS, enable audio capture for its Narratron Browser Source (the exact option name varies by OBS version) so the page audio is included in the stream/mixer. The page has no player UI. When previewing it in a normal browser, its autoplay policy may require one click on the canvas before sound can begin; OBS Browser Source normally permits autoplay. The Foundry overlay passes its **Enable Background Audio Sync** setting to the same page; set it off if music should stay out of the Foundry client.
+
+## Publishing to the Foundry package repository
+
+Create the version tag and GitHub release first, attaching `module.json` and `module.zip`. The download URL in `module.json` must point to that version's `module.zip` asset.
+
+Then validate the release with Foundry's Package Release API:
+
+```powershell
+pwsh ./scripts/publish-foundry.ps1
+```
+
+The script reads the release token from `FOUNDRY_RELEASE_TOKEN`. If the variable is not set during an interactive run, it requests the token with a masked prompt. After the dry run succeeds, publish the package release with:
+
+```powershell
+pwsh ./scripts/publish-foundry.ps1 -Publish
+```
+
+The publish command always repeats the dry-run validation before making changes. Never commit the release token to the repository.
