@@ -36,9 +36,17 @@ The Narratron view is a floating panel: drag its title bar to move it and use th
 
 The `/obs` page now plays the active Narratron background playlist as well as rendering the visuals. In OBS, enable audio capture for its Narratron Browser Source (the exact option name varies by OBS version) so the page audio is included in the stream/mixer. The page has no player UI. When previewing it in a normal browser, its autoplay policy may require one click on the canvas before sound can begin; OBS Browser Source normally permits autoplay. The Foundry overlay passes its **Enable Background Audio Sync** setting to the same page; set it off if music should stay out of the Foundry client.
 
-## Publishing to the Foundry package repository
+## Publishing a release
 
-Create the version tag and GitHub release first, attaching `module.json` and `module.zip`. The download URL in `module.json` must point to that version's `module.zip` asset.
+Update the version and version-specific download URL in `module.json`, then commit and push those changes. The Git working tree must be clean before creating the GitHub release.
+
+Create the GitHub tag and release, including its `module.json` and `module.zip` assets, with:
+
+```powershell
+pwsh ./publish/create-github-release.ps1
+```
+
+The script uses GitHub CLI (`gh`). It reuses an existing GitHub login or starts `gh auth login --web` when authentication is needed, so no GitHub token is passed to the script. Use `-Draft` or `-Prerelease` when applicable. The script packages the module from the current commit, verifies that the commit exists on GitHub, creates the `v<version>` tag and release, and uploads both assets.
 
 Then validate the release with Foundry's Package Release API:
 
@@ -52,4 +60,4 @@ After the dry run succeeds, publish the package release with:
 pwsh ./publish/publish-foundry.ps1 -ReleaseToken 'YOUR_PACKAGE_RELEASE_TOKEN' -Publish
 ```
 
-The publish command always repeats the dry-run validation before making changes. Never commit the release token to the repository. Be aware that command-line arguments may be saved in shell history or visible to local process-inspection tools.
+The Foundry publish command always repeats the dry-run validation before making changes. Never commit the Foundry release token to the repository. Be aware that command-line arguments may be saved in shell history or visible to local process-inspection tools.
