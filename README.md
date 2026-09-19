@@ -48,6 +48,8 @@ pwsh ./publish/create-github-release.ps1
 
 The script uses GitHub CLI (`gh`). It reuses an existing GitHub login or starts `gh auth login --web` when authentication is needed, so no GitHub token is passed to the script. Use `-Draft` or `-Prerelease` when applicable. The script packages the module from the current commit, verifies that the commit exists on GitHub, creates the `v<version>` tag and release, and uploads both assets.
 
+No checked-in `dist/` directory is required. The top-level `module.json` is the source of truth, and `module.zip` is generated in a temporary directory that is removed after the GitHub release is created.
+
 Then validate the release with Foundry's Package Release API:
 
 ```powershell
