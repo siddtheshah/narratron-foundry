@@ -4,7 +4,13 @@ This folder contains the official Foundry VTT module for Narratron Buddy. It add
 
 ## Installation into Foundry VTT
 
-1. Copy or symlink this `foundry/` directory into your Foundry VTT User Data directory under `Data/modules/narratron-buddy-vtt`:
+In Foundry VTT, open **Add-on Modules**, click **Install Module**, and paste this URL into **Manifest URL**:
+
+`https://github.com/siddtheshah/narratron-foundry/releases/latest/download/module.json`
+
+For a manual installation, download `module.zip` from the latest GitHub release and extract it to your Foundry VTT User Data directory under `Data/modules/narratron-buddy-vtt`:
+
+1. The module directory is located at:
    - **Windows**: `%LOCALAPPDATA%\FoundryVTT\Data\modules\narratron-buddy-vtt`
    - **macOS**: `~/Library/Application Support/FoundryVTT/Data/modules/narratron-buddy-vtt`
    - **Linux**: `~/.local/share/FoundryVTT/Data/modules/narratron-buddy-vtt`
