@@ -77,7 +77,7 @@ $dryRunBody = @{
   release = $release
 } | ConvertTo-Json -Depth 5
 
-$dryRun = Invoke-RestMethod -Uri $releaseEndpoint -Method Post -Headers $headers -Body $dryRunBody
+$dryRun = Invoke-RestMethod -Uri $releaseEndpoint -Method Post -Headers $headers -Body $dryRunBody -SkipHeaderValidation
 if ($dryRun.status -ne "success") {
   throw "Foundry's release validation did not succeed."
 }
@@ -94,7 +94,7 @@ $publishBody = @{
   release = $release
 } | ConvertTo-Json -Depth 5
 
-$result = Invoke-RestMethod -Uri $releaseEndpoint -Method Post -Headers $headers -Body $publishBody
+$result = Invoke-RestMethod -Uri $releaseEndpoint -Method Post -Headers $headers -Body $publishBody -SkipHeaderValidation
 if ($result.status -ne "success") {
   throw "Foundry did not report a successful package release."
 }
