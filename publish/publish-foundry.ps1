@@ -51,58 +51,53 @@ if ($remoteManifest.download -ne $manifest.download) {
 
 $null = Invoke-WebRequest -Uri $manifest.download -Method Head
 
-try {
-  $headers = @{
-    Authorization = $ReleaseToken
-    Accept = "application/json"
-    "Content-Type" = "application/json"
-  }
-
-  $maximumCompatibility = $manifest.compatibility.PSObject.Properties["maximum"]
-  $compatibility = @{
-    minimum = [string] $manifest.compatibility.minimum
-    verified = [string] $manifest.compatibility.verified
-    maximum = if ($maximumCompatibility) { [string] $maximumCompatibility.Value } else { "" }
-  }
-
-  $release = @{
-    version = [string] $manifest.version
-    manifest = $releaseManifestUrl
-    notes = $notesUrl
-    compatibility = $compatibility
-  }
-
-  $dryRunBody = @{
-    id = [string] $manifest.id
-    "dry-run" = $true
-    release = $release
-  } | ConvertTo-Json -Depth 5
-
-  $dryRun = Invoke-RestMethod -Uri $releaseEndpoint -Method Post -Headers $headers -Body $dryRunBody
-  if ($dryRun.status -ne "success") {
-    throw "Foundry's release validation did not succeed."
-  }
-
-  Write-Host "Foundry dry run succeeded for $($manifest.id) v$($manifest.version)."
-
-  if (-not $Publish) {
-    Write-Host "No changes were published. Run again with -Publish to create the release."
-    exit 0
-  }
-
-  $publishBody = @{
-    id = [string] $manifest.id
-    release = $release
-  } | ConvertTo-Json -Depth 5
-
-  $result = Invoke-RestMethod -Uri $releaseEndpoint -Method Post -Headers $headers -Body $publishBody
-  if ($result.status -ne "success") {
-    throw "Foundry did not report a successful package release."
-  }
-
-  Write-Host "Published $($manifest.id) v$($manifest.version) to Foundry VTT."
-  Write-Host "Package management page: $($result.page)"
+$headers = @{
+  Authorization = $ReleaseToken
+  Accept = "application/json"
+  "Content-Type" = "application/json"
 }
-finally {
-  $ReleaseToken = $null
+
+$maximumCompatibility = $manifest.compatibility.PSObject.Properties["maximum"]
+$compatibility = @{
+  minimum = [string] $manifest.compatibility.minimum
+  verified = [string] $manifest.compatibility.verified
+  maximum = if ($maximumCompatibility) { [string] $maximumCompatibility.Value } else { "" }
 }
+
+$release = @{
+  version = [string] $manifest.version
+  manifest = $releaseManifestUrl
+  notes = $notesUrl
+  compatibility = $compatibility
+}
+
+$dryRunBody = @{
+  id = [string] $manifest.id
+  "dry-run" = $true
+  release = $release
+} | ConvertTo-Json -Depth 5
+
+$dryRun = Invoke-RestMethod -Uri $releaseEndpoint -Method Post -Headers $headers -Body $dryRunBody
+if ($dryRun.status -ne "success") {
+  throw "Foundry's release validation did not succeed."
+}
+
+Write-Host "Foundry dry run succeeded for $($manifest.id) v$($manifest.version)."
+
+if (-not $Publish) {
+  Write-Host "No changes were published. Run again with -Publish to create the release."
+  exit 0
+}
+
+$publishBody = @{
+  id = [string] $manifest.id
+  release = $release
+} | ConvertTo-Json -Depth 5
+
+$result = Invoke-RestMethod -Uri $releaseEndpoint -Method Post -Headers $headers -Body $publishBody
+if ($result.status -ne "success") {
+  throw "Foundry did not report a successful package release."
+}
+
+Write-Host "Published $($manifest.id) v$($manifest.version) to Foundry VTT."
+Write-Host "Package management page: $($result.page)"
